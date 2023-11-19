@@ -2,32 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI-ZYMES</title>
+    <title>科研绘图</title>
     <link rel="shortcut icon" href="https://www.baidu.com/favicon.ico" type="image/x-icon">
-   <meta http-equiv="Access-Control-Allow-Origin" content="*">
-    <style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js">
 
-        *{
-            margin: 0;
-            padding: 0;
-        }
- 
-        html,body{
-            overflow-x:hidden;
-            overflow-y:hidden;
-            width: 100%;
-            height: 100%;
-        }
-        .contain{
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+    </script>
 </head>
 <body>
-        <div class = "contain"  >
-  	<iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https%3A%2F%2Fgitee%2Ecom%3A443%2Fcarwang%2Fimg%2Fraw%2Fmaster%2Fimportant%2Exlsx&waccluster=PSG4" width="100%" height="100%" frameborder="0" ></iframe>
-        </div>
+<!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+<div id="main" style="width: 100%;height:1000px;"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: [150, 230, 224, 218, 135, 147, 260],
+                type: 'line'
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+</script>
 </body>
- 
 </html>
