@@ -209,9 +209,11 @@
 
     function getSVGContent() {
         var svgContainer = document.getElementById('main');
+        var svg = svgContainer.querySelector('svg');
         var serializer = new XMLSerializer();
-        var svgString = serializer.serializeToString(svgContainer);
-        return '<?xml version="1.0" standalone="no"?>\r\n' + svgString;
+        var svgString = serializer.serializeToString(svg);
+
+        return svgString;
     }
 
     function updateSymbolSize(value) {
