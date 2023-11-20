@@ -60,12 +60,12 @@
         <input type="number" id="yAxisMaxInput" value="100">
         <button id="updateAxisRangeBtn" onclick="updateAxisRange()">更新轴范围</button>
     </div>
-    <input type="range" id="sizeSlider" min="1" max="100" value="1" step="1" oninput="updateSymbolSize(this.value)">
+    <input type="range" id="sizeSlider" min="1" max="100" value="8" step="1" oninput="updateSymbolSize(this.value)">
 </div>
 <div id="main" style="width: 100%;height:600px;"></div>
 <script type="text/javascript">
     var myChart = echarts.init(document.getElementById('main'), null, {renderer: 'svg'});
-    var symbolSize = 1;
+    var symbolSize = 8;
     var data = [];
     var xAxisMin = -100;
     var xAxisMax = 100;
