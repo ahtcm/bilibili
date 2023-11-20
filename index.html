@@ -305,6 +305,25 @@
         data.push([xnumber, yCoordinate]);
         updateChart();
     });
+        function updateAxisRange() {
+        xAxisMin = parseFloat(document.getElementById('xAxisMinInput').value);
+        xAxisMax = parseFloat(document.getElementById('xAxisMaxInput').value);
+        yAxisMin = parseFloat(document.getElementById('yAxisMinInput').value);
+        yAxisMax = parseFloat(document.getElementById('yAxisMaxInput').value);
+
+        myChart.setOption({
+            xAxis: {
+                min: xAxisMin,
+                max: xAxisMax,
+            },
+            yAxis: {
+                min: yAxisMin,
+                max: yAxisMax,
+            },
+        });
+
+        updateChart();
+    }
 </script>
 </body>
 </html>
