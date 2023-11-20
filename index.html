@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>科研绘图</title>
-    <link rel="shortcut icon" href="https://www.baidu.com/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="wang.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <script src="https://fastly.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <style>
@@ -18,18 +18,7 @@
             font-size: 20px;
         }
 
-        #downloadBtn {
-            padding: 20px 20px;
-            width: 200px;
-            font-size: 20px;
-            cursor: pointer;
-            background-color: blue;
-            color: white;
-            border: none;
-            border-radius: 4px;
-        }
-
-        #generateBtn {
+        #generateBtn, #downloadBtn, #exportCsvBtn, #importCsvBtn {
             padding: 20px 20px;
             width: 200px;
             font-size: 20px;
@@ -41,107 +30,58 @@
         }
 
         #sizeSlider {
-            width: 1000px; /* Set the desired width of the slider */
+            width: 100%;
         }
 
-        #generateBtn:hover {
+        #generateBtn:hover,
+        #downloadBtn:hover,
+        #exportCsvBtn:hover,
+        #importCsv:hover {
             background-color: #45a049;
         }
     </style>
 </head>
 <body>
-<!-- 添加输入框和按钮 -->
 <div class="content">
     <input type="number" id="numInput" placeholder="请输入新增点数（大于0）" min="1" max="100">
     <button id="generateBtn" onclick="generatePoints()">确定</button>
     <button id="downloadBtn" onclick="downloadSVG()">下载SVG</button>
-    <br/>
-    <input type="range" id="sizeSlider" min="1" max="100" value="1" step="1" oninput="updateSymbolSize(this.value)">
+    <button id="exportCsvBtn" onclick="exportCsv()">导出CSV</button>
+    <label id="importCsvBtn" for="importCsv">上传文件CSV</label>
+    <input type="file" id="importCsv" accept=".csv" onchange="importCsv()" style="display: none">
+    <div>
+        <label for="xAxisMinInput">X轴最小值:</label>
+        <input type="number" id="xAxisMinInput" value="-100">
+        <label for="xAxisMaxInput">X轴最大值:</label>
+        <input type="number" id="xAxisMaxInput" value="100">
+        <label for="yAxisMinInput">Y轴最小值:</label>
+        <input type="number" id="yAxisMinInput" value="-100">
+        <label for="yAxisMaxInput">Y轴最大值:</label>
+        <input type="number" id="yAxisMaxInput" value="100">
+        <button id="updateAxisRangeBtn" onclick="updateAxisRange()">更新轴范围</button>
+    </div>
 </div>
-<!-- 为 ECharts 准备一个定义了宽高的 DOM -->
 <div id="main" style="width: 100%;height:800px;"></div>
-
-
+<input type="range" id="sizeSlider" min="1" max="100" value="1" step="1" oninput="updateSymbolSize(this.value)">
 <script type="text/javascript">
     var myChart = echarts.init(document.getElementById('main'), null, {renderer: 'svg'});
     var symbolSize = 1;
-    var data = [
-        [
-            -94.85907917383821,
-            9.48275862068968
-        ],
-        [
-            -69.63209982788295,
-            72.93103448275865
-        ],
-        [
-            -52.60047332185886,
-            47.58620689655173
-        ],
-        [
-            -27.271299483648875,
-            36.89655172413795
-        ],
-        [
-            2.103958691910492,
-            56.66666666666668
-        ],
-        [
-            39.5331325301205,
-            50.000000000000014
-        ],
-        [
-            59.56863166953528,
-            -8.333333333333314
-        ],
-        [
-            83.31440947009997,
-            -51.02742366563636
-        ]
-    ];
-
-    function generatePoints() {
-        var num = parseInt(document.getElementById('numInput').value, 10);
-
-        for (var i = 0; i < num; i++) {
-            var x = Math.random() * 200 - 100;
-            var y = Math.random() * 200 - 100;
-            data.push([x, y]);
-        }
-
-        myChart.setOption({
-            series: [
-                {
-                    id: 'a',
-                    data: data
-                }
-            ],
-            graphic: echarts.util.map(data, function (item, dataIndex) {
-                return {
-                    type: 'circle',
-                    shape: {
-                        r: symbolSize / 2
-                    },
-                    position: myChart.convertToPixel('grid', item),
-                    invisible: true,
-                    draggable: true,
-                    z: 100,
-                    ondrag: echarts.util.curry(onPointDragging, dataIndex)
-                };
-            })
-        });
-    }
+    var data = [];
+    var xAxisMin = -100;
+    var xAxisMax = 100;
+    var yAxisMin = -100;
+    var yAxisMax = 100;
 
     var option = {
         xAxis: {
-            min: -100,
-            max: 100,
+            min: xAxisMin,
+            max: xAxisMax,
             type: 'value',
             axisLine: {onZero: false}
         },
         yAxis: {
-            min: -100,
-            max: 100,
+            min: yAxisMin,
+            max: yAxisMax,
             type: 'value',
             axisLine: {onZero: false}
         },
@@ -196,6 +136,64 @@
         });
     });
 
+    function generatePoints() {
+        var num = parseInt(document.getElementById('numInput').value, 10);
+
+        for (var i = 0; i < num; i++) {
+            var x = Math.random() * (xAxisMax - xAxisMin) + xAxisMin;
+            var y = Math.random() * (yAxisMax - yAxisMin) + yAxisMin;
+            data.push([x, y]);
+        }
+
+        myChart.setOption({
+            series: [
+                {
+                    id: 'a',
+                    data: data
+                }
+            ],
+            graphic: echarts.util.map(data, function (item, dataIndex) {
+                return {
+                    type: 'circle',
+                    shape: {
+                        r: symbolSize / 2
+                    },
+                    position: myChart.convertToPixel('grid', item),
+                    invisible: true,
+                    draggable: true,
+                    z: 100,
+                    ondrag: echarts.util.curry(onPointDragging, dataIndex)
+                };
+            })
+        });
+
+        updateChart();
+    }
+
+    function updateChart() {
+        myChart.setOption({
+            series: [
+                {
+                    id: 'a',
+                    data: data
+                }
+            ],
+            graphic: echarts.util.map(data, function (item, dataIndex) {
+                return {
+                    type: 'circle',
+                    shape: {
+                        r: symbolSize / 2
+                    },
+                    position: myChart.convertToPixel('grid', item),
+                    invisible: true,
+                    draggable: true,
+                    z: 100,
+                    ondrag: echarts.util.curry(onPointDragging, dataIndex)
+                };
+            })
+        });
+    }
+
     function downloadSVG() {
         var svgContent = getSVGContent();
         var blob = new Blob([svgContent], {type: "image/svg+xml;charset=utf-8"});
@@ -244,6 +242,69 @@
         });
     }
 
+    function exportCsv() {
+        var csvContent = "x,y\n";
+
+        data.forEach(function (point) {
+            csvContent += point.join(",") + "\n";
+        });
+
+        var blob = new Blob([csvContent], {type: "text/csv;charset=utf-8;"});
+        var link = document.createElement("a");
+
+        if (link.download !== undefined) {
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            alert("导出CSV不受支持，请手动复制数据。");
+        }
+    }
+
+    function importCsv() {
+        var fileInput = document.getElementById("importCsv");
+        var file = fileInput.files[0];
+
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var contents = e.target.result;
+                var lines = contents.split("\n");
+
+                data = [];
+
+                lines.forEach(function (line) {
+                    var values = line.split(",");
+                    if (values.length === 2) {
+                        var x = parseFloat(values[0]);
+                        var y = parseFloat(values[1]);
+                        data.push([x, y]);
+                    }
+                });
+
+                updateChart();
+            };
+
+            reader.readAsText(file);
+        }
+    }
+
+    var xnumber = xAxisMin;
+
+    myChart.getZr().on('contextmenu', function (params) {
+        params.event.preventDefault();
+        var e = params.event.event;
+        var yCoordinate = myChart.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY])[1];
+        var xAxis = myChart.getOption().xAxis[0];
+        var xAxisMin = xAxis.min;
+        var xAxisMax = xAxis.max;
+        xnumber = xnumber + (xAxisMax - xAxisMin) / 100;
+        data.push([xnumber, yCoordinate]);
+        updateChart();
+    });
 </script>
 </body>
 </html>
