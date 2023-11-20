@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>科研绘图</title>
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/ahtcm/image/main/wang.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="wang.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <script src="https://fastly.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <style>
@@ -60,9 +60,9 @@
         <input type="number" id="yAxisMaxInput" value="100">
         <button id="updateAxisRangeBtn" onclick="updateAxisRange()">更新轴范围</button>
     </div>
+    <input type="range" id="sizeSlider" min="1" max="100" value="1" step="1" oninput="updateSymbolSize(this.value)">
 </div>
-<div id="main" style="width: 100%;height:800px;"></div>
-<input type="range" id="sizeSlider" min="1" max="100" value="1" step="1" oninput="updateSymbolSize(this.value)">
+<div id="main" style="width: 100%;height:600px;"></div>
 <script type="text/javascript">
     var myChart = echarts.init(document.getElementById('main'), null, {renderer: 'svg'});
     var symbolSize = 1;
