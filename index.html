@@ -18,7 +18,7 @@
             font-size: 20px;
         }
 
-        #generateBtn, #downloadBtn, #exportCsvBtn, #importCsvBtn {
+        #generateBtn, #downloadBtn, #exportCsvBtn, #importCsvBtn, #meeting {
             padding: 20px 20px;
             width: 200px;
             font-size: 20px;
@@ -36,7 +36,8 @@
         #generateBtn:hover,
         #downloadBtn:hover,
         #exportCsvBtn:hover,
-        #importCsv:hover {
+        #importCsv:hover,
+        #meeting:hover {
             background-color: #45a049;
         }
     </style>
@@ -49,6 +50,7 @@
     <button id="exportCsvBtn" onclick="exportCsv()">导出CSV</button>
     <label id="importCsvBtn" for="importCsv">上传文件CSV</label>
     <input type="file" id="importCsv" accept=".csv" onchange="importCsv()" style="display: none">
+    <button id="meeting" onclick="window.location.href='./meeting.html'">与我会议</button>
     <div>
         <label for="xAxisMinInput">X轴最小值:</label>
         <input type="number" id="xAxisMinInput" value="-100">
