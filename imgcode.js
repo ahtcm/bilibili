@@ -194,6 +194,7 @@
           if (verified) {
             addClass(this.sliderContainer, 'sliderContainer_success')
             typeof this.onSuccess === 'function' && this.onSuccess()
+            this.reset();
             window.location.href="https://springboot.wang";
           } else {
             addClass(this.sliderContainer, 'sliderContainer_fail')
