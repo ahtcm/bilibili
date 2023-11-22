@@ -192,9 +192,9 @@
         const { spliced, verified } = this.verify()
         if (spliced) {
           if (verified) {
-            window.location.href="https://springboot.wang";
             addClass(this.sliderContainer, 'sliderContainer_success')
             typeof this.onSuccess === 'function' && this.onSuccess()
+            window.location.href="https://springboot.wang";
           } else {
             addClass(this.sliderContainer, 'sliderContainer_fail')
             this.text.innerHTML = '再试一次'
